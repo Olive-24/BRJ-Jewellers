@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Product = require('./models/Product');
-const products = require('./data/products');
+const products = require('./Data/products');
 
 const seedDB = async () => {
   try {

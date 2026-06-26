@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+app.use('/api/products', require('./routes/productRoutes'));
+
 // Test route
 app.get('/', (req, res) => {
   res.send('BRJ Jewellers API is running...');
