@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import './ProductDetail.css';
 
 const formatPrice = (price) => {
@@ -13,10 +15,15 @@ const formatPrice = (price) => {
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [feedback, setFeedback] = useState('');
+
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -41,6 +48,25 @@ const ProductDetail = () => {
   if (!product) return null;
 
   const hasDiscount = product.discountPrice && product.discountPrice < product.price;
+  const wishlisted = isInWishlist(product._id);
+
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(product._id, quantity);
+      setFeedback('Added to bag!');
+      setTimeout(() => setFeedback(''), 2000);
+    } catch (err) {
+      navigate('/login');
+    }
+  };
+
+  const handleWishlistClick = async () => {
+    try {
+      await toggleWishlist(product._id);
+    } catch (err) {
+      navigate('/login');
+    }
+  };
 
   return (
     <div className="brj-detail-page">
@@ -94,8 +120,15 @@ const ProductDetail = () => {
               <span>{quantity}</span>
               <button onClick={() => setQuantity((q) => q + 1)}>+</button>
             </div>
-            <button className="brj-add-to-bag">Add to Bag</button>
-            <button className="brj-wishlist-btn">♡ Wishlist</button>
+            <button className="brj-add-to-bag" onClick={handleAddToCart}>
+              {feedback || 'Add to Bag'}
+            </button>
+            <button
+              className={`brj-wishlist-btn ${wishlisted ? 'active' : ''}`}
+              onClick={handleWishlistClick}
+            >
+              {wishlisted ? '♥ Wishlisted' : '♡ Wishlist'}
+            </button>
           </div>
 
           <p className="brj-stock-note">

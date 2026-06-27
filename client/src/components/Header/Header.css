@@ -246,3 +246,39 @@
       box-shadow: none;
     }
   }
+  
+  .brj-account-menu {
+    position: relative;
+  }
+  
+  .brj-account-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--color-white);
+    box-shadow: 0 8px 20px rgba(27, 67, 50, 0.15);
+    border-radius: 6px;
+    padding: 14px;
+    min-width: 140px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 60;
+  }
+  
+  .brj-account-menu:hover .brj-account-dropdown {
+    display: flex;
+  }
+  
+  .brj-account-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-charcoal);
+  }
+  
+  .brj-logout-btn {
+    font-size: 0.82rem;
+    color: var(--color-rosegold);
+    text-align: left;
+    font-weight: 500;
+  }

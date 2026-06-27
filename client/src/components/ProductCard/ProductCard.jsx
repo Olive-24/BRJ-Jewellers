@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiStar } from 'react-icons/fi';
+import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
 import './ProductCard.css';
 
 const formatPrice = (price) => {
@@ -12,7 +14,10 @@ const formatPrice = (price) => {
 };
 
 const ProductCard = ({ product }) => {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const navigate = useNavigate();
+  const [feedback, setFeedback] = useState('');
 
   const {
     _id,
@@ -31,6 +36,27 @@ const ProductCard = ({ product }) => {
     ? Math.round(((price - discountPrice) / price) * 100)
     : 0;
 
+  const wishlisted = isInWishlist(_id);
+
+  const handleWishlistClick = async (e) => {
+    e.preventDefault();
+    try {
+      await toggleWishlist(_id);
+    } catch (err) {
+      navigate('/login');
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      await addToCart(_id, 1);
+      setFeedback('Added!');
+      setTimeout(() => setFeedback(''), 1500);
+    } catch (err) {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="brj-card">
       <div className="brj-card-image-wrap">
@@ -47,8 +73,8 @@ const ProductCard = ({ product }) => {
         )}
 
         <button
-          className={`brj-card-wishlist ${isWishlisted ? 'active' : ''}`}
-          onClick={() => setIsWishlisted(!isWishlisted)}
+          className={`brj-card-wishlist ${wishlisted ? 'active' : ''}`}
+          onClick={handleWishlistClick}
           aria-label="Toggle wishlist"
         >
           <FiHeart />
@@ -76,7 +102,9 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
-        <button className="brj-card-cta">Add to Bag</button>
+        <button className="brj-card-cta" onClick={handleAddToCart}>
+          {feedback || 'Add to Bag'}
+        </button>
       </div>
     </div>
   );

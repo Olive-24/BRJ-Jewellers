@@ -1,3 +1,4 @@
+import { useAuth } from '../../context/AuthContext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiMenu, FiX } from 'react-icons/fi';
@@ -34,6 +35,7 @@ const navCategories = [
 const Header = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const slugify = (text) => text.toLowerCase().replace(/\s+/g, '-');
 
@@ -69,9 +71,21 @@ const Header = () => {
           <Link to="/cart" className="brj-icon-btn" aria-label="Cart">
             <FiShoppingBag />
           </Link>
-          <Link to="/login" className="brj-icon-btn" aria-label="Account">
-            <FiUser />
-          </Link>
+          {user ? (
+            <div className="brj-account-menu">
+                <button className="brj-icon-btn" aria-label="Account">
+                <FiUser />
+                </button>
+                <div className="brj-account-dropdown">
+                <span className="brj-account-name">Hi, {user.name.split(' ')[0]}</span>
+                <button onClick={logout} className="brj-logout-btn">Logout</button>
+                </div>
+            </div>
+            ) : (
+            <Link to="/login" className="brj-icon-btn" aria-label="Account">
+                <FiUser />
+            </Link>
+            )}
         </div>
       </div>
 

@@ -194,3 +194,8 @@
       grid-template-columns: 1fr 1fr;
     }
   }
+
+  .brj-wishlist-btn.active {
+    background-color: var(--color-rosegold);
+    color: var(--color-white);
+  }
