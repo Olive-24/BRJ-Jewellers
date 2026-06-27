@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home';
+import CategoryPage from './pages/CategoryPage/CategoryPage';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/category/:slug" element={<CategoryPage />} />
       </Routes>
       <Footer />
     </div>
