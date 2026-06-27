@@ -1,13 +1,17 @@
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import Home from './pages/Home/Home';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <div style={{ padding: '40px', textAlign: 'center' }}>
-        <h2>Rest of the page coming soon...</h2>
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }
