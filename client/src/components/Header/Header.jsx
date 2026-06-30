@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiHeart, FiShoppingBag, FiUser, FiMenu, FiX } from 'react-icons/fi';
 import './Header.css';
+import { useNavigate } from 'react-router-dom';
 
 const navCategories = [
   {
@@ -35,6 +36,16 @@ const navCategories = [
 const Header = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+            setSearchQuery('');
+        }
+    };
   const { user, logout } = useAuth();
 
   const slugify = (text) => text.toLowerCase().replace(/\s+/g, '-');
@@ -59,10 +70,15 @@ const Header = () => {
           <span className="brj-logo-tagline">Jewellers</span>
         </Link>
 
-        <div className="brj-searchbar">
-          <FiSearch className="brj-search-icon" />
-          <input type="text" placeholder="Search for rings, necklaces, gifts..." />
-        </div>
+        <form className="brj-searchbar" onSubmit={handleSearch}>
+            <FiSearch className="brj-search-icon" />
+            <input
+            type="text"
+            placeholder="Search for rings, necklaces, gifts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            />
+        </form>
 
         <div className="brj-icons">
           <Link to="/wishlist" className="brj-icon-btn" aria-label="Wishlist">

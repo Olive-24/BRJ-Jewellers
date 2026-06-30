@@ -10,6 +10,7 @@ import Cart from './pages/Cart/Cart';
 import Wishlist from './pages/Wishlist/Wishlist';
 import Checkout from './pages/Checkout/Checkout';
 import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
+import SearchResults from './pages/SearchResults/SearchResults';
 import './App.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/search" element={<SearchResults />} />
       </Routes>
       <Footer />
     </div>

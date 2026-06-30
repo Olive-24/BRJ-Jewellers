@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../utils/api';
 import './Checkout.css';
 
 const formatPrice = (price) => {
@@ -35,16 +36,25 @@ const Checkout = () => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setPlacing(true);
-
-    // Clear cart (simulating order placement; no real payment is processed)
-    for (const item of cart) {
-      if (item.product) {
-        await removeFromCart(item.product._id);
-      }
+  
+    try {
+      const { data } = await api.post(
+        '/orders',
+        {
+          shippingAddress: form,
+          paymentMethod,
+        },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+  
+      navigate('/order-success', {
+        state: { orderNumber: data.orderNumber, total: data.totalAmount },
+      });
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to place order. Please try again.');
+    } finally {
+      setPlacing(false);
     }
-
-    const orderNumber = `BRJ${Math.floor(100000 + Math.random() * 900000)}`;
-    navigate('/order-success', { state: { orderNumber, total: cartTotal } });
   };
 
   if (!user) {

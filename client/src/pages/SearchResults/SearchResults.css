@@ -1,0 +1,44 @@
+.brj-search-page {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+    min-height: 50vh;
+  }
+  
+  .brj-search-title {
+    font-size: 1.7rem;
+    color: var(--color-charcoal);
+  }
+  
+  .brj-search-title span {
+    color: var(--color-emerald);
+  }
+  
+  .brj-search-count {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin: 6px 0 28px;
+  }
+  
+  .brj-product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .brj-status-text {
+    text-align: center;
+    padding: 60px 0;
+    font-size: 0.95rem;
+    opacity: 0.7;
+  }
+  
+  .brj-error-text {
+    color: var(--color-rosegold);
+  }
+  
+  @media (max-width: 900px) {
+    .brj-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
